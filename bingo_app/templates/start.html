@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Landing Page</title>
+    <style>
+        #joinProjectForm {
+            display: none;
+        }
+        #createProjectForm{
+            display: none;
+        }
+        #joinProjectForm select {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: darkgrey;
+            color: white;
+            border-radius: 4px;
+            padding: 8px 12px;
+            margin-bottom: 15px;
+            width: 100%;
+            border: 1px solid #ccc;
+        }
+
+        #joinProjectForm button {
+            background-color: #173a5f;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: block; /* Make the button expand to the full width */
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+            margin-top: 10px; /* Add some space above the button */
+        }
+
+        #joinProjectForm button:hover {
+            background-color: #0056b3;
+        }
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif; /* Non-serif font */
+            background-color: black;
+            color: #ccc;
+        }
+        input, select, textarea {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+        .form-field {
+            margin-bottom: 15px;
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; /* Ensures padding doesn't affect overall width */
+            background-color: darkgrey;
+        }
+        .button {
+            background-color: #4CAF50; /* Green background */
+            color: white; /* White text */
+            padding: 15px 32px; /* Top/bottom and left/right padding */
+            text-align: center;
+            width: 100%;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px; /* Larger font size */
+            margin: 4px 2px;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px; /* Rounded corners */
+        }
+
+        .button:hover {
+            background-color: #45a049; /* Darker shade for hover effect */
+        }
+        .button-2 {
+            background-color: #dd5a13; /* Green background */
+            color: white; /* White text */
+            padding: 15px 32px; /* Top/bottom and left/right padding */
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px; /* Larger font size */
+            margin: 4px 2px;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px; /* Rounded corners */
+        }
+
+        .button-2:hover {
+            background-color: #b1470e; /* Darker shade for hover effect */
+        }
+        .submit-btn {
+            background-color: #173a5f;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script>
+        function showJoinProjectForm() {
+            document.getElementById('joinProjectForm').style.display = 'block';
+        }
+        function showCreateProjectForm() {
+            document.getElementById('createProjectForm').style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+    <h1>Servus beim Bingo</h1>
+    <button onclick="showCreateProjectForm()" class="button">Start a neichs Bingo Spü</button>
+    <form id="createProjectForm" method="post" action="{% url 'create_project' %}">
+        {% csrf_token %}
+        <input type="text" name="project_id" placeholder="Wie heißt's denn?" class="form-field">
+        <button type="submit" class="submit-btn">Auf geht's</button>
+    </form>
+    <br>
+    <button onclick="showJoinProjectForm()" class="button-2">Schließ di an a bestehends Spü an</button>
+
+    <form id="joinProjectForm" method="post" action="{% url 'join_project' %}">
+        {% csrf_token %}
+        {{ join_form.as_p }}
+        <button type="submit">Auf geht's!</button>
+    </form>
+</body>
+</html>

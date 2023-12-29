@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Join a Bingo Project</title>
+</head>
+<body>
+    <h1>Join a Bingo Project</h1>
+    <form method="post" action="{% url 'join_project' %}">
+        {% csrf_token %}
+        {{ join_form.as_p }}
+        <button type="submit">Schließ di an a bestehends Spü an</button>
+    </form>
+</body>
+</html>

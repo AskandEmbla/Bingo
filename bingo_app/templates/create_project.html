@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create a Bingo Project</title>
+</head>
+<body>
+    <h1>Create a New Bingo Project</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Start a neichs Bingo Spü</button>
+    </form>
+</body>
+</html>

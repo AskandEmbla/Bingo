@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Make a Suggestion</title>
+</head>
+<style>
+    body {
+            font-family: 'Comic Sans MS', cursive, sans-serif; /* Non-serif font */
+            background-color: black;
+            color: #ccc;
+        }
+        input, select, textarea {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+        .vote-btn {
+            font-size: 14px;
+            padding: 5px 10px; /* Add padding for button size */
+            text-decoration: none;
+            color: white; /* Text color */
+            border-radius: 15px; /* Rounded corners */
+            transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+        }
+
+        .bingo_button {
+            background-color: #173a5f;
+        }
+
+        .upvote-btn {
+            background-color: #28a745; /* Green background for upvote */
+        }
+
+        .downvote-btn {
+            background-color: #dc3545; /* Red background for downvote */
+        }
+
+        .vote-btn:hover {
+            opacity: 0.8; /* Slight transparency on hover */
+        }
+
+        .suggestion-item {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        input[type="text"], input[type="email"], input[type="password"] {
+            font-size: 16px; /* Increase font size */
+            /* Add additional styling as needed */
+        }
+
+        .suggestion-text {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+         /* Style for form fields */
+         .form-field {
+            margin-bottom: 15px;
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; /* Ensures padding doesn't affect overall width */
+            background-color: darkgrey;
+        }
+        .button-container {
+        display: flex;
+        justify-content: flex-end; /* Aligns the button to the right */
+        /* Add any additional styling as needed */
+    }
+
+        select[name="category"] {
+            font-size: 16px; /* Increase font size */
+            padding: 10px; /* Add more padding */
+            border-radius: 4px; /* Optional: rounded corners */
+            border: 1px solid #ccc; /* Optional: border styling */
+            /* Additional styling as needed */
+        }
+
+        /* Style for the submit button */
+        .submit-btn {
+            background-color: #173a5f;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Feedback styles for voting buttons */
+        .vote-btn.voted {
+            filter: brightness(0.5);
+            color: #ccc; /* Grey color */
+            cursor: default;
+            pointer-events: none; /* Disables the button functionality */
+        }
+</style>
+<body>
+    <h1>Wos kummt 2024?</h1>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="suggestion" placeholder="Your Suggestion" class="form-field">
+        <select name="category" class="form-field">
+            <option value="UT">&#128519; Utopisch</option>
+            <option value="DY">&#128520; Dystopisch</option>
+        </select>
+        <button type="submit" class="submit-btn">Des könnt kumma</button>
+    </form>
+    <div class="button-container">
+        <button onclick="window.location.href='{% url 'generate_bingo_card' %}'" class="vote-btn bingo_button">Gib ma mei Bingo Karte</button>
+    </div>
+
+    <h2>Kummt des?</h2>
+    {% for suggestion in suggestions %}
+        <div class="suggestion-item">
+            <p class="suggestion-text">{{ suggestion.text }} {% if suggestion.category == 'UT' %}
+                &#128519; <!-- Angel Emoji 😇 -->
+            {% else %}
+                &#128520; <!-- Devil Emoji 😈 -->
+            {% endif %}</p>
+
+            <p>Votes: {{ suggestion.upvotes }}</p>
+            <p><a href="{% url 'upvote' suggestion.id %}" class="vote-btn upvote-btn {% if suggestion.id in request.session.voted_suggestions %}voted{% endif %}">&#128077; Leiwand!</a> <!-- 👍 -->
+            <a href="{% url 'downvote' suggestion.id %}" class="vote-btn downvote-btn {% if suggestion.id in request.session.voted_suggestions %}voted{% endif %}">&#128078; Na, des is schiach...</a> <!-- 👎  --></p>
+        </div>
+    {% endfor %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.vote-btn').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    button.classList.add('voted'); // Add 'voted' class for visual feedback
+                });
+            });
+        });
+        document.getElementById('generatePdfButton').addEventListener('click', function() {
+            window.open('/path/to/generate_bingo_card/', '_blank'); // Open PDF in a new tab to trigger download
+            window.location.href = '/'; // Redirect to home page
+        });
+    </script>
+</body>
+</html>
